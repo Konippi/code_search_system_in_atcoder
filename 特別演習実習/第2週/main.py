@@ -2,6 +2,9 @@ import sqlite3  #SQLite
 import requests  #HTMLにアクセス&データ取得
 import re  #compile関数を用いる
 from bs4 import BeautifulSoup  #HTMLから特定のデータを抽出する
+#from flask import Flask, render_template, request  #Flask
+
+#app = Flask(__name__)
 
 def get_code(code_url, num2):
 
@@ -37,6 +40,7 @@ def print_out():
     print(problem.text)
     print('https://atcoder.jp' + problem.attrs['href'], '\n')
 
+#@app.route('/')
 url = 'https://atcoder.jp/contests/abc100/submissions?f.Task=abc100_b&f.LanguageName=&f.Status=AC&f.User='
 html = requests.get(url)
 soup = BeautifulSoup(html.content, 'html.parser')
@@ -86,21 +90,32 @@ db_name = 'atcoder.db'
 con = sqlite3.connect(db_name)
 cur = con.cursor()
 
-for i in range(20):
-    sql = ('INSERT INTO atcoder (id, date, user, rating,\
-           language, code_len, runtime, memory, code)\
-           VALUES(?,?,?,?,?,?,?,?,?)')
+try:
+    cur.execute('CREATE TABLE atcoder(id INTEGER ,date STRING,\
+    user STRING, rating STRING, language STRING,code_len STRING,\
+    runtime STRING, memory STRING, code STRING)')
 
-    data = (i, date[i], user[i], rating[i], language[i],
-            code_len[i], runtime[i], memory[i], code[i])
+    for i in range(20):
+        sql = ('INSERT INTO atcoder (id, date, user, rating,\
+            language, code_len, runtime, memory, code)\
+            VALUES(?,?,?,?,?,?,?,?,?)')
 
-    cur.execute(sql, data)
+        data = (i, date[i], user[i], rating[i], language[i],
+                code_len[i], runtime[i], memory[i], code[i])
 
-cur.execute('SELECT * FROM atcoder')
+        cur.execute(sql, data)
+    
+    con.commit()
 
-print(cur.fetchall()[1])
+    cur.close()
+    con.close()
 
-con.commit()
+except sqlite3.OperationalError:
+    cur.close()
+    con.close()
 
-cur.close()
-con.close()
+#return render_template('index.html',)
+'''
+if __name__ == '__main__':
+    app.run(debug = True)
+'''
