@@ -2,9 +2,22 @@ import sqlite3  #SQLite
 import requests  #HTMLにアクセス&データ取得
 import re  #compile関数を用いる
 from bs4 import BeautifulSoup  #HTMLから特定のデータを抽出する
-#from flask import Flask, render_template, request  #Flask
+from flask import Flask, render_template, request  #Flask
 
-#app = Flask(__name__)
+app = Flask(__name__)
+
+url = 'https://atcoder.jp/contests/abc100/submissions?f.Task=abc100_b&f.LanguageName=&f.Status=AC&f.User='
+html = requests.get(url)
+soup = BeautifulSoup(html.content, 'html.parser')
+
+date = []
+user = []
+rating = []
+language = []
+code_len = []
+runtime = []
+memory = []
+code = []
 
 def get_code(code_url, num2):
 
@@ -31,91 +44,72 @@ def get_rating(user_url, num3, i):
     if judge == False:
         rating.append(0)
 
-def print_out():
+@app.route('/')
+def main():
 
-    print('コンテスト名:')
-    print(title.text, '\n')
+    num = 0
+    m = 0
 
-    print('問題:')
-    print(problem.text)
-    print('https://atcoder.jp' + problem.attrs['href'], '\n')
+    title = soup.find('a', class_ = 'contest-title')
+    problem = soup.find(href = re.compile('/abc100_b'))
 
-#@app.route('/')
-url = 'https://atcoder.jp/contests/abc100/submissions?f.Task=abc100_b&f.LanguageName=&f.Status=AC&f.User='
-html = requests.get(url)
-soup = BeautifulSoup(html.content, 'html.parser')
+    for i in soup.find_all('tbody'):
 
-date = []
-user = []
-rating = []
-language = []
-code_len = []
-runtime = []
-memory = []
-code = []
-num = 0
-m = 0
+        for j in i.find_all('time', class_ = 'fixtime-second'):
+            date.append(j.text)
+            
+        for j in i.find_all(href = re.compile('/users')):
+            user.append(j.text)
+            get_rating('https://atcoder.jp' + j.attrs['href'], 0, m)
+            m += 1
+            
+        for j in i.find_all(href = re.compile('Language')):
+            language.append(j.text)
+            
+        for j in i.find_all('td', class_ = 'text-right'):
+            if num % 4 == 1:
+                code_len.append(j.text)
+            elif num % 4 == 2:
+                runtime.append(j.text)
+            elif num % 4 == 3:
+                memory.append(j.text)
+            num += 1
+            
+        for j in i.find_all(href = re.compile('/contests/abc100/submissions/')):
+            get_code('https://atcoder.jp' + j.attrs['href'], 0)
 
-title = soup.find('a', class_ = 'contest-title')
-problem = soup.find(href = re.compile('/abc100_b'))
+    db_name = 'atcoder.db'
+    con = sqlite3.connect(db_name)
+    cur = con.cursor()
 
-for i in soup.find_all('tbody'):
+    try:
+        cur.execute('CREATE TABLE atcoder(id INTEGER ,date STRING,\
+        user STRING, rating STRING, language STRING,code_len STRING,\
+        runtime STRING, memory STRING, code STRING)')
 
-    for j in i.find_all('time', class_ = 'fixtime-second'):
-        date.append(j.text)
+        for i in range(20):
+            sql = ('INSERT INTO atcoder (id, date, user, rating,\
+                language, code_len, runtime, memory, code)\
+                VALUES(?,?,?,?,?,?,?,?,?)')
+
+            data = (i, date[i], user[i], rating[i], language[i],
+                    code_len[i], runtime[i], memory[i], code[i])
+
+            cur.execute(sql, data)
         
-    for j in i.find_all(href = re.compile('/users')):
-        user.append(j.text)
-        get_rating('https://atcoder.jp' + j.attrs['href'], 0, m)
-        m += 1
-        
-    for j in i.find_all(href = re.compile('Language')):
-        language.append(j.text)
-        
-    for j in i.find_all('td', class_ = 'text-right'):
-        if num % 4 == 1:
-            code_len.append(j.text)
-        elif num % 4 == 2:
-            runtime.append(j.text)
-        elif num % 4 == 3:
-            memory.append(j.text)
-        num += 1
-        
-    for j in i.find_all(href = re.compile('/contests/abc100/submissions/')):
-        get_code('https://atcoder.jp' + j.attrs['href'], 0)
-    
-print_out()
-
-db_name = 'atcoder.db'
-con = sqlite3.connect(db_name)
-cur = con.cursor()
-
-try:
-    cur.execute('CREATE TABLE atcoder(id INTEGER ,date STRING,\
-    user STRING, rating STRING, language STRING,code_len STRING,\
-    runtime STRING, memory STRING, code STRING)')
-
-    for i in range(20):
-        sql = ('INSERT INTO atcoder (id, date, user, rating,\
-            language, code_len, runtime, memory, code)\
-            VALUES(?,?,?,?,?,?,?,?,?)')
-
-        data = (i, date[i], user[i], rating[i], language[i],
-                code_len[i], runtime[i], memory[i], code[i])
-
-        cur.execute(sql, data)
+    except sqlite3.OperationalError:
+        None
     
     con.commit()
-
+    
+    cur.execute('SELECT * FROM atcoder')
+    db_data = cur.fetchall()
+    
     cur.close()
     con.close()
 
-except sqlite3.OperationalError:
-    cur.close()
-    con.close()
+    return render_template('index.html',title = title.text,\
+        second_title = problem.text, data = db_data)
 
-#return render_template('index.html',)
-'''
 if __name__ == '__main__':
     app.run(debug = True)
-'''
