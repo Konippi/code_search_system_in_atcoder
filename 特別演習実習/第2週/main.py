@@ -79,12 +79,12 @@ def main():
             for j in i.find_all(href = re.compile('/contests/abc100/submissions/')):
                 get_code('https://atcoder.jp' + j.attrs['href'], 0)
 
-    db_name = 'atcoder.db'
+    db_name = 'atcoder_list.db'
     con = sqlite3.connect(db_name)
     cur = con.cursor()
 
     try:
-        cur.execute('CREATE TABLE atcoder(id INTEGER ,date STRING,\
+        cur.execute('CREATE TABLE atcoder(id INTEGER, date STRING,\
         user STRING, rating STRING, language STRING,code_len STRING,\
         runtime STRING, memory STRING, code STRING)')
 
