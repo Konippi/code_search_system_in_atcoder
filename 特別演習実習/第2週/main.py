@@ -1,6 +1,7 @@
 import sqlite3  #SQLite
 import requests  #HTMLにアクセス&データ取得
 import re  #compile関数を用いる
+from itertools import groupby  #配列のグループ分け
 from bs4 import BeautifulSoup  #HTMLから特定のデータを抽出する
 from flask import Flask, render_template, request  #Flask
 
@@ -80,6 +81,22 @@ for a in range(5):
             for j in i.find_all(href = re.compile('/contests/abc100/submissions/')):
                 get_code('https://atcoder.jp' + j.attrs['href'], 0)
 
+data_list = []
+for i in range(100):
+    data_list.append((date[i], user[i], rating[i], language[i], code_len[i], runtime[i], memory[i], code[i]))
+
+data_list.sort(key = lambda x: x[3])
+
+for i in range(100):
+    date[i] = data_list[i][0]
+    user[i] = data_list[i][1]
+    rating[i] = data_list[i][2]
+    language[i] = data_list[i][3]
+    code_len[i] = data_list[i][4]
+    runtime[i] = data_list[i][5]
+    memory[i] = data_list[i][6]
+    code[i] = data_list[i][7]
+
 db_name = 'atcoder_list.db'
 con = sqlite3.connect(db_name)
 cur = con.cursor()
@@ -114,6 +131,11 @@ con.close()
 def main():
 
     return render_template('first.html', title = title.text, second_title = problem.text)
+
+@app.route('/Working')
+def second():
+
+    return render_template('second.html', title = title.text + ' Working', data = db_data)
 
 if __name__ == '__main__':
     app.run(debug = True)
