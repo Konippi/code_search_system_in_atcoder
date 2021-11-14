@@ -40,19 +40,20 @@ def get_rating(user_url, num3, i):
     if judge == False:
         rating.append(0)
 
-@app.route('/')
-def main():
+url = 'https://atcoder.jp/contests/abc100/submissions?f.Task=abc100_b&f.LanguageName=&f.Status=AC&f.User=&page='
+html = requests.get(url)
+soup = BeautifulSoup(html.content, 'html.parser')
 
-    for a in range(5):
+title = soup.find('a', class_ = 'contest-title')
+problem = soup.find(href = re.compile('/abc100_b'))
+
+for a in range(5):
         url = 'https://atcoder.jp/contests/abc100/submissions?f.Task=abc100_b&f.LanguageName=&f.Status=AC&f.User=&page=' + str(a+1)
         html = requests.get(url)
         soup = BeautifulSoup(html.content, 'html.parser')
 
         num = 0
         m = 0
-
-        title = soup.find('a', class_ = 'contest-title')
-        problem = soup.find(href = re.compile('/abc100_b'))
 
         for i in soup.find_all('tbody'):
 
@@ -79,38 +80,40 @@ def main():
             for j in i.find_all(href = re.compile('/contests/abc100/submissions/')):
                 get_code('https://atcoder.jp' + j.attrs['href'], 0)
 
-    db_name = 'atcoder_list.db'
-    con = sqlite3.connect(db_name)
-    cur = con.cursor()
+db_name = 'atcoder_list.db'
+con = sqlite3.connect(db_name)
+cur = con.cursor()
 
-    try:
-        cur.execute('CREATE TABLE atcoder(id INTEGER, date STRING,\
-        user STRING, rating STRING, language STRING,code_len STRING,\
-        runtime STRING, memory STRING, code STRING)')
+try:
+    cur.execute('CREATE TABLE atcoder(id INTEGER, date STRING,\
+    user STRING, rating STRING, language STRING,code_len STRING,\
+    runtime STRING, memory STRING, code STRING)')
 
-        for i in range(100):
-            sql = ('INSERT INTO atcoder (id, date, user, rating,\
-                language, code_len, runtime, memory, code)\
-                VALUES(?,?,?,?,?,?,?,?,?)')
+    for i in range(100):
+        sql = ('INSERT INTO atcoder (id, date, user, rating,\
+            language, code_len, runtime, memory, code)\
+            VALUES(?,?,?,?,?,?,?,?,?)')
 
-            data = (i, date[i], user[i], rating[i], language[i],
-                    code_len[i], runtime[i], memory[i], code[i])
+        data = (i, date[i], user[i], rating[i], language[i],
+                code_len[i], runtime[i], memory[i], code[i])
 
-            cur.execute(sql, data)
-        
-    except sqlite3.OperationalError:
-        None
+        cur.execute(sql, data)
     
-    con.commit()
-    
-    cur.execute('SELECT * FROM atcoder')
-    db_data = cur.fetchall()
-    
-    cur.close()
-    con.close()
+except sqlite3.OperationalError:
+    None
 
-    return render_template('index.html',title = title.text,\
-        second_title = problem.text, data = db_data)
+con.commit()
+
+cur.execute('SELECT * FROM atcoder')
+db_data = cur.fetchall()
+
+cur.close()
+con.close()
+
+@app.route('/')
+def main():
+
+    return render_template('first.html', title = title.text, second_title = problem.text)
 
 if __name__ == '__main__':
     app.run(debug = True)
