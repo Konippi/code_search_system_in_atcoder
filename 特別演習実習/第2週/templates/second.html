@@ -8,6 +8,13 @@
 </head>
 <body>
     <h1>{{title}}</h1>
-    <p>{{data}}</p>
+    <div>
+        {% for i in language_key %}
+            <p>{{i}}</p>
+        {% endfor %}
+        {% for i in language_value %}
+            <p>{{i}}</p>
+        {% endfor %}
+    </div>
 </body>
 </html>
