@@ -5,15 +5,13 @@
     <meta name="viewport" content="width=device-width">
     <title>{{title}}</title>
     <link rel="stylesheet" href="../static/css/second.css">
+    <script type="text/javascript" src="../static/javascript/d3.min.js"></script>
 </head>
 <body>
     <h1>{{title}}</h1>
     <div>
-        {% for i in language_key %}
-            <p>{{i}}</p>
-        {% endfor %}
-        {% for i in language_value %}
-            <p>{{i}}</p>
+        {% for i in range(language_len) %}
+            <p>{{language_key[i]}}:{{language_value[i]}}</p>
         {% endfor %}
     </div>
 </body>
