@@ -5,14 +5,15 @@
     <meta name="viewport" content="width=device-width">
     <title>{{title}}</title>
     <link rel="stylesheet" href="../static/css/second.css">
-    <script type="text/javascript" src="../static/javascript/d3.min.js"></script>
+    <script type="text/javascript" src="http://d3js.org/d3.v4.min.js"></script>
+    <script type="text/javascript">
+        var language_key = {{language_key|tojson}};
+        var language_value = {{language_value|tojson}};
+        var language_len = {{language_len|tojson}};
+    </script>
 </head>
 <body>
     <h1>{{title}}</h1>
-    <div>
-        {% for i in range(language_len) %}
-            <p>{{language_key[i]}}:{{language_value[i]}}</p>
-        {% endfor %}
-    </div>
+    <script type="text/javascript" src="../static/javascript/bubble.js"></script>
 </body>
 </html>
