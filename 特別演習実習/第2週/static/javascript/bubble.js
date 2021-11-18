@@ -7,9 +7,9 @@ for(var i=1;i<language_len;i++){
     dataset.children.push({"Name":language_key[i],"Count":language_value[i]});
 }
 
-var svgWidth = 700;
-var svgHeight = 700;
-var diameter = 600;
+var svgWidth = 800;
+var svgHeight = 800;
+var diameter = 700;
 
 var color = d3.scaleOrdinal(d3.schemeCategory20);
 
