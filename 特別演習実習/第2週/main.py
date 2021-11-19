@@ -85,7 +85,6 @@ c_language = collections.Counter(language)  #言語のカウント
 
 language_key = list(c_language.keys())
 language_value = list(c_language.values())
-language_len = len(language_key)
 
 db_name = 'atcoder_list.db'
 con = sqlite3.connect(db_name)
@@ -125,7 +124,12 @@ def main():
 @app.route('/Working')
 def second():
 
-    return render_template('second.html', title = title.text, language_key = language_key, language_value = language_value, language_len = language_len)
+    return render_template('second.html', title = problem.text, language_key = language_key, language_value = language_value, language_len = 100)
+
+@app.route('/Working/Users')
+def third():
+
+    return render_template('third.html', title = problem.text, user_key = user, user_value = rating, user_len = 100)
 
 if __name__ == '__main__':
     app.run(debug = True)

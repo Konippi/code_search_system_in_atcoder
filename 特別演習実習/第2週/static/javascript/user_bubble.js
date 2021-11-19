@@ -1,25 +1,24 @@
 var dataset = {
     "children": [
-        {"Name":language_key[0],"Count":language_value[0]}
+        {Name:user_key[0], Count:user_value[0]}
     ]
 };
-for(var i=1;i<language_len;i++){
-    dataset.children.push({"Name":language_key[i],"Count":language_value[i]});
+for(var i=1;i<user_len;i++){
+    dataset.children.push({Name:user_key[i], Count:user_value[i]});
 }
 
-var svgWidth = 800;
-var svgHeight = 800;
-var diameter = 700;
+var diameter = 650;
 
 var color = d3.scaleOrdinal(d3.schemeCategory20);
 
 var bubble = d3.pack(dataset)
     .size([diameter, diameter])
+    .padding(1.5);
 
 var svg = d3.select("body")
     .append("svg")
-    .attr("width", svgWidth)
-    .attr("height", svgHeight)
+    .attr("width", diameter)
+    .attr("height", diameter)
     .attr("class", "bubble");
 
 var nodes = d3.hierarchy(dataset)
@@ -29,7 +28,7 @@ var node = svg.selectAll(".node")
     .data(bubble(nodes).descendants())
     .enter()
     .filter(function(d){
-        return  !d.children
+        return !d.children
     })
     .append("g")
     .attr("class", "node")
@@ -60,30 +59,30 @@ node.append("circle")
         .attr("stroke-width", 1)
     })
     .on("click", function() {
-        location.href = 'https://atcoder.jp';
+        location.href = 'http://127.0.0.1:5000/Working/Users';
     }) ;
 
 node.append("text")
-    .attr("dy", ".2em")
-    .style("text-anchor", "middle")
+    .attr("dy", "0")
+    .attr("text-anchor", "middle")
     .text(function(d) {
-        return d.data.Name.substring(0, d.r / 3);
+        return d.data.Name;
     })
     .attr("font-family", "sans-serif")
     .attr("font-size", function(d){
-        return d.r/5;
+        return d.r/7;
     })
     .attr("fill", "white");
 
 node.append("text")
-    .attr("dy", "1.3em")
-    .style("text-anchor", "middle")
+    .attr("dy", "1.5em")
+    .attr("text-anchor", "middle")
     .text(function(d) {
         return d.data.Count;
     })
     .attr("font-family",  "Gill Sans", "Gill Sans MT")
     .attr("font-size", function(d){
-        return d.r/5;
+        return d.r/7;
     })
     .attr("fill", "white");
 
