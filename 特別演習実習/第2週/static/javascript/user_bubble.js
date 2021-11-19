@@ -1,10 +1,10 @@
 var dataset = {
     "children": [
-        {Name:user_key[0], Count:user_value[0]}
+        {"Name":user_key[0], "Count":user_value[0]}
     ]
 };
 for(var i=1;i<user_len;i++){
-    dataset.children.push({Name:user_key[i], Count:user_value[i]});
+    dataset.children.push({"Name":user_key[i], "Count":user_value[i]});
 }
 
 var diameter = 650;

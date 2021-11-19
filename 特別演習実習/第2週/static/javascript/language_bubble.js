@@ -1,10 +1,10 @@
 var dataset = {
-    children: [
-        {Name:language_key[0], Count:language_value[0]}
+    "children": [
+        {"Name":language_key[0], "Count":language_value[0]}
     ]
 };
 for(var i=1;i<language_len;i++){
-    dataset.children.push({Name:language_key[i], Count:language_value[i]});
+    dataset.children.push({"Name":language_key[i], "Count":language_value[i]});
 }
 
 var diameter = 650;
