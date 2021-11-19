@@ -43,7 +43,7 @@ node.append("title")
 
 node.append("circle")
     .attr("r", function(d) {
-        return d.r;
+        return d.r*1.02;  /*rate0除外*/
     })
     .style("fill", function(d,i) {
         return color(i);
@@ -70,7 +70,7 @@ node.append("text")
     })
     .attr("font-family", "sans-serif")
     .attr("font-size", function(d){
-        return d.r/7;
+        return d.r/5;
     })
     .attr("fill", "white");
 
@@ -82,7 +82,7 @@ node.append("text")
     })
     .attr("font-family",  "Gill Sans", "Gill Sans MT")
     .attr("font-size", function(d){
-        return d.r/7;
+        return d.r/5;
     })
     .attr("fill", "white");
 

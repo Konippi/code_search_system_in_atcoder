@@ -43,7 +43,7 @@ node.append("title")
 
 node.append("circle")
     .attr("r", function(d) {
-        return d.r;
+        return d.r*1.01;
     })
     .style("fill", function(d,i) {
         return color(i);
