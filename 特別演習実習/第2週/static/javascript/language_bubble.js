@@ -1,9 +1,8 @@
 var dataset = {
-    "children": [
-        {"Name":language_key[0], "Count":language_value[0]}
-    ]
+    "children": []
 };
-for(var i=1;i<language_len;i++){
+
+for(var i=0;i<language_len;i++){
     dataset.children.push({"Name":language_key[i], "Count":language_value[i]});
 }
 
@@ -36,11 +35,6 @@ var node = svg.selectAll(".node")
         return "translate(" + d.x + "," + d.y + ")";
     });
 
-node.append("title")
-    .text(function(d) {
-        return d.Name + ": " + d.Count;
-    });
-
 node.append("circle")
     .attr("r", function(d) {
         return d.r*1.01;
@@ -50,7 +44,7 @@ node.append("circle")
     })
     .on("mouseover", function() { 
         d3.select(this)
-        .attr("stroke", "gray")
+        .attr("stroke", "darkgray")
         .attr("stroke-width", 6)
     })
     .on("mouseout", function() { 
@@ -58,9 +52,12 @@ node.append("circle")
         .attr("stroke", "white")
         .attr("stroke-width", 1)
     })
-    .on("click", function() {
-        location.href = 'http://127.0.0.1:5000/Working/Users';
-    }) ;
+    .on("click", function(d) {
+        d3.select(this)
+        .attr("stroke", "gray")
+        .attr("stroke-width", 6)
+        document.getElementById("language").value = d.data.Name;
+    });
 
 node.append("text")
     .attr("dy", "0")

@@ -1,9 +1,8 @@
 var dataset = {
-    "children": [
-        {"Name":user_key[0], "Count":user_value[0]}
-    ]
+    "children": []
 };
-for(var i=1;i<user_len;i++){
+
+for(var i=0;i<user_len;i++){
     dataset.children.push({"Name":user_key[i], "Count":user_value[i]});
 }
 
@@ -36,21 +35,16 @@ var node = svg.selectAll(".node")
         return "translate(" + d.x + "," + d.y + ")";
     });
 
-node.append("title")
-    .text(function(d) {
-        return d.Name + ": " + d.Count;
-    });
-
 node.append("circle")
     .attr("r", function(d) {
-        return d.r*1.02;  /*rate0除外*/
+        return d.r*1.01;  /*rate0除外*/
     })
     .style("fill", function(d,i) {
         return color(i);
     })
     .on("mouseover", function() { 
         d3.select(this)
-        .attr("stroke", "gray")
+        .attr("stroke", "darkgray")
         .attr("stroke-width", 4)
     })
     .on("mouseout", function() { 
@@ -59,6 +53,9 @@ node.append("circle")
         .attr("stroke-width", 1)
     })
     .on("click", function() {
+        d3.select(this)
+        .attr("stroke", "gray")
+        .attr("stroke-width", 4)
         location.href = 'http://127.0.0.1:5000/Working/Users';
     }) ;
 

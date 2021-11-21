@@ -49,39 +49,39 @@ title = soup.find('a', class_ = 'contest-title')
 problem = soup.find(href = re.compile('/abc100_b'))
 
 for a in range(5):
-        url = 'https://atcoder.jp/contests/abc100/submissions?f.Task=abc100_b&f.LanguageName=&f.Status=AC&f.User=&page=' + str(a+1)
-        html = requests.get(url)
-        soup = BeautifulSoup(html.content, 'html.parser')
+    url = 'https://atcoder.jp/contests/abc100/submissions?f.Task=abc100_b&f.LanguageName=&f.Status=AC&f.User=&page=' + str(a+1)
+    html = requests.get(url)
+    soup = BeautifulSoup(html.content, 'html.parser')
 
-        num = 0
-        m = 0
+    num = 0
+    m = 0
 
-        for i in soup.find_all('tbody'):
+    for i in soup.find_all('tbody'):
 
-            for j in i.find_all('time', class_ = 'fixtime-second'):
-                date.append(j.text)
-                
-            for j in i.find_all(href = re.compile('/users')):
-                user.append(j.text)
-                get_rating('https://atcoder.jp' + j.attrs['href'], 0, m)
-                m += 1
-                
-            for j in i.find_all(href = re.compile('Language')):
-                language.append(j.text)
-                
-            for j in i.find_all('td', class_ = 'text-right'):
-                if num % 4 == 1:
-                    code_len.append(j.text)
-                elif num % 4 == 2:
-                    runtime.append(j.text)
-                elif num % 4 == 3:
-                    memory.append(j.text)
-                num += 1
-                
-            for j in i.find_all(href = re.compile('/contests/abc100/submissions/')):
-                get_code('https://atcoder.jp' + j.attrs['href'], 0)
+        for j in i.find_all('time', class_ = 'fixtime-second'):
+            date.append(j.text)
+            
+        for j in i.find_all(href = re.compile('/users')):
+            user.append(j.text)
+            get_rating('https://atcoder.jp' + j.attrs['href'], 0, m)
+            m += 1
+            
+        for j in i.find_all(href = re.compile('Language')):
+            language.append(j.text)
+            
+        for j in i.find_all('td', class_ = 'text-right'):
+            if num % 4 == 1:
+                code_len.append(j.text)
+            elif num % 4 == 2:
+                runtime.append(j.text)
+            elif num % 4 == 3:
+                memory.append(j.text)
+            num += 1
+            
+        for j in i.find_all(href = re.compile('/contests/abc100/submissions/')):
+            get_code('https://atcoder.jp' + j.attrs['href'], 0)
 
-c_language = collections.Counter(language)  #言語のカウント
+c_language = collections.Counter(language)
 
 language_key = list(c_language.keys())
 language_value = list(c_language.values())
@@ -104,7 +104,7 @@ try:
                 code_len[i], runtime[i], memory[i], code[i])
 
         cur.execute(sql, data)
-    
+
 except sqlite3.OperationalError:
     None
 
@@ -123,13 +123,24 @@ def main():
 
 @app.route('/Working')
 def second():
-
+ 
     return render_template('second.html', title = problem.text, language_key = language_key, language_value = language_value, language_len = 100)
 
-@app.route('/Working/Users')
+@app.route('/Working/Users', methods=['GET', 'POST'])
 def third():
 
-    return render_template('third.html', title = problem.text, user_key = user, user_value = rating, user_len = 100)
+    if request.method == 'POST':
+        lang = request.form['language']
+    
+    user_key = []
+    user_value = []
+
+    for i in range(100):
+        if(language[i] == lang):
+            user_key.append(user[i])
+            user_value.append(rating[i])
+
+    return render_template('third.html', title = problem.text, user_key = user_key, user_value = user_value, user_len = len(user_key))
 
 if __name__ == '__main__':
     app.run(debug = True)
