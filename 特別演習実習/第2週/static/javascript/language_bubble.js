@@ -44,7 +44,7 @@ node.append("circle")
     })
     .on("mouseover", function() { 
         d3.select(this)
-        .attr("stroke", "darkgray")
+        .attr("stroke", "gray")
         .attr("stroke-width", 6)
     })
     .on("mouseout", function() { 
@@ -54,7 +54,7 @@ node.append("circle")
     })
     .on("click", function(d) {
         d3.select(this)
-        .attr("stroke", "gray")
+        .attr("stroke", "black")
         .attr("stroke-width", 6)
         document.getElementById("language").value = d.data.Name;
     });
@@ -77,7 +77,7 @@ node.append("text")
     .text(function(d) {
         return d.data.Count;
     })
-    .attr("font-family",  "Gill Sans", "Gill Sans MT")
+    .attr("font-family", "arial")
     .attr("font-size", function(d){
         return d.r/7;
     })

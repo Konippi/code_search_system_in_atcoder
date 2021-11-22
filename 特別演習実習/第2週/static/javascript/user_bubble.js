@@ -1,10 +1,17 @@
+var beginner = 0;
+
 var dataset = {
     "children": []
 };
 
 for(var i=0;i<user_len;i++){
+    if(user_value[i] == 0){
+        beginner++;
+    }
     dataset.children.push({"Name":user_key[i], "Count":user_value[i]});
 }
+
+document.getElementById("beginner").innerHTML = "non-rated: " + beginner; 
 
 var diameter = 650;
 
@@ -37,14 +44,14 @@ var node = svg.selectAll(".node")
 
 node.append("circle")
     .attr("r", function(d) {
-        return d.r*1.01;  /*rate0除外*/
+        return d.r;
     })
     .style("fill", function(d,i) {
         return color(i);
     })
     .on("mouseover", function() { 
         d3.select(this)
-        .attr("stroke", "darkgray")
+        .attr("stroke", "gray")
         .attr("stroke-width", 4)
     })
     .on("mouseout", function() { 
@@ -52,11 +59,11 @@ node.append("circle")
         .attr("stroke", "white")
         .attr("stroke-width", 1)
     })
-    .on("click", function() {
+    .on("click", function(d) {
         d3.select(this)
-        .attr("stroke", "gray")
+        .attr("stroke", "black")
         .attr("stroke-width", 4)
-        location.href = 'http://127.0.0.1:5000/Working/Users';
+        document.getElementById("user").value = d.data.Name;
     }) ;
 
 node.append("text")
@@ -79,7 +86,7 @@ node.append("text")
     })
     .attr("font-family",  "Gill Sans", "Gill Sans MT")
     .attr("font-size", function(d){
-        return d.r/5;
+        return d.r/7;
     })
     .attr("fill", "white");
 

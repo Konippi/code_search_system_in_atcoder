@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="../static/css/final.css">
+    <script type="text/javascript" src="http://d3js.org/d3.v4.min.js"></script>
+    <script type="text/javascript">
+        var code_len_key = {{code_len_key|tojson}};
+        var runtime_key = {{runtime_key|tojson}};
+        var memory_key = {{memory_key|tojson}};
+        var code_key = {{code_key|tojson}};
+    </script>
+</head>
+<body>
+    <h1>Detail</h1>
+    <p>{{code_len_key}}</p>
+    <p>{{runtime_key}}</p>
+    <p>{{memory_key}}</p>
+    <p>{{code_key}}</p>
+    <script type="text/javascript" src="../static/javascript/detail.js"></script>
+</body>
+</html>
