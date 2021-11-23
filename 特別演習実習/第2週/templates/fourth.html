@@ -4,8 +4,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <title>{{title}}</title>
-    <link rel="stylesheet" href="../static/css/final.css">
+    <link rel="stylesheet" href="/static/css/fourth.css">
     <script type="text/javascript" src="http://d3js.org/d3.v4.min.js"></script>
+    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
     <script type="text/javascript">
         var code_len_key = {{code_len_key|tojson}};
         var runtime_key = {{runtime_key|tojson}};
@@ -15,10 +16,11 @@
 </head>
 <body>
     <h1>Detail</h1>
-    <p>{{code_len_key}}</p>
-    <p>{{runtime_key}}</p>
-    <p>{{memory_key}}</p>
-    <p>{{code_key}}</p>
-    <script type="text/javascript" src="../static/javascript/detail.js"></script>
+    <div class="detail">
+        <p class="list"><span class="subject">Code-length</span>: {{code_len_key}}</p>
+        <p class="list"><span class="subject">Runtime</span>: {{runtime_key}}</p>
+        <p class="list"><span class="subject">Memory</span>: {{memory_key}}</p>
+    </div>
+    <pre class="prettyprint linenums"><code>{{code_key}}</code></pre>
 </body>
 </html>

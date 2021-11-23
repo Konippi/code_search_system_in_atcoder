@@ -119,7 +119,7 @@ def main():
 
 @app.route('/Working')
 def second():
- 
+
     return render_template('second.html', title = problem.text, language_key = language_key, language_value = language_value, language_len = 100)
 
 @app.route('/Working/Users', methods=['GET', 'POST'])
@@ -145,19 +145,14 @@ def final():
     if request.method == 'POST':
         your_user = request.form['user']
     
-    code_len_key = []
-    runtime_key = []
-    memory_key = []
-    code_key = []
-    
     for i in range(100):
         if(user[i] == your_user):
-            code_len_key.append(code_len[i])
-            runtime_key.append(runtime[i])
-            memory_key.append(memory[i])
-            code_key.append(code[i])
+            code_len_key = code_len[i]
+            runtime_key = runtime[i]
+            memory_key = memory[i]
+            code_key = code[i]
 
-    return render_template('final.html', title = problem.text, code_len_key = code_len_key, runtime_key = runtime_key, memory_key = memory_key, code_key = code_key)
+    return render_template('fourth.html', title = problem.text, code_len_key = code_len_key, runtime_key = runtime_key, memory_key = memory_key, code_key = code_key)
 
 if __name__ == '__main__':
     app.run(debug = True)

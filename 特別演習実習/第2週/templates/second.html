@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <title>{{title}}</title>
-    <link rel="stylesheet" href="../static/css/second.css">
+    <link rel="stylesheet" href="/static/css/second.css">
     <script type="text/javascript" src="http://d3js.org/d3.v4.min.js"></script>
     <script type="text/javascript">
         var language_key = {{language_key|tojson}};
@@ -17,7 +17,7 @@
     <form action="/Working/Users" method="POST">
         <p>Selection:
             <input type="text" id="language" name="language">
-            <input type="submit" id="submit" value="→">
+            <input type="hidden" id="submit" value="→">
         </p>
     </form>
     <script type="text/javascript" src="../static/javascript/language_bubble.js"></script>

@@ -64,6 +64,7 @@ node.append("circle")
         .attr("stroke", "black")
         .attr("stroke-width", 4)
         document.getElementById("user").value = d.data.Name;
+        document.getElementById("submit").type = "submit";
     }) ;
 
 node.append("text")
@@ -84,7 +85,7 @@ node.append("text")
     .text(function(d) {
         return d.data.Count;
     })
-    .attr("font-family",  "Gill Sans", "Gill Sans MT")
+    .attr("font-family",  "arial")
     .attr("font-size", function(d){
         return d.r/7;
     })
