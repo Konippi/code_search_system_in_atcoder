@@ -11,7 +11,7 @@ for(var i=0;i<user_len;i++){
     dataset.children.push({"Name":user_key[i], "Count":user_value[i]});
 }
 
-document.getElementById("beginner").innerHTML = "non-rated: " + beginner; 
+document.getElementById("beginner").innerHTML = "コンテスト未参加者: " + beginner + "名"; 
 
 var diameter = 650;
 
@@ -44,7 +44,7 @@ var node = svg.selectAll(".node")
 
 node.append("circle")
     .attr("r", function(d) {
-        return d.r;
+        return 0;
     })
     .style("fill", function(d,i) {
         return color(i);
@@ -93,3 +93,13 @@ node.append("text")
 
 d3.select(self.frameElement)
     .style("height", diameter + "px");
+
+d3.selectAll("circle")
+    .transition()
+    .duration(500)
+    .delay(function(d, i){
+        return i*100;
+    })
+    .attr("r", function(d) {
+        return d.r*1.01;
+    })

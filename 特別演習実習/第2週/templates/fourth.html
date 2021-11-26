@@ -7,19 +7,13 @@
     <link rel="stylesheet" href="/static/css/fourth.css">
     <script type="text/javascript" src="http://d3js.org/d3.v4.min.js"></script>
     <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
-    <script type="text/javascript">
-        var code_len_key = {{code_len_key|tojson}};
-        var runtime_key = {{runtime_key|tojson}};
-        var memory_key = {{memory_key|tojson}};
-        var code_key = {{code_key|tojson}};
-    </script>
 </head>
 <body>
     <h1>Detail</h1>
     <div class="detail">
-        <p class="list"><span class="subject">Code-length</span>: {{code_len_key}}</p>
-        <p class="list"><span class="subject">Runtime</span>: {{runtime_key}}</p>
-        <p class="list"><span class="subject">Memory</span>: {{memory_key}}</p>
+        <p class="list"><span class="subject">Code-length:  </span>{{code_len_key}}</p>
+        <p class="list"><span class="subject">Runtime:  </span>{{runtime_key}}</p>
+        <p class="list"><span class="subject">Memory:  </span>{{memory_key}}</p>
     </div>
     <pre class="prettyprint linenums"><code>{{code_key}}</code></pre>
 </body>

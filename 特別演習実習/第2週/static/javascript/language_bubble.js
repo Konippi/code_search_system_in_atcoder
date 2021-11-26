@@ -37,7 +37,7 @@ var node = svg.selectAll(".node")
 
 node.append("circle")
     .attr("r", function(d) {
-        return d.r*1.01;
+        return 0;
     })
     .style("fill", function(d,i) {
         return color(i);
@@ -86,3 +86,13 @@ node.append("text")
 
 d3.select(self.frameElement)
     .style("height", diameter + "px");
+
+d3.selectAll("circle")
+    .transition()
+    .duration(700)
+    .delay(function(d, i){
+        return i*250;
+    })
+    .attr("r", function(d) {
+        return d.r*1.01;
+    })
