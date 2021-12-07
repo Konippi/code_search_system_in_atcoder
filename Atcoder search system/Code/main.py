@@ -81,7 +81,7 @@ db_name = 'atcoder_list.db'
 con = sqlite3.connect(db_name)
 cur = con.cursor()
 
-try:
+def create_db():
     cur.execute('CREATE TABLE atcoder(id INTEGER, user STRING,\
     rating STRING, language STRING,code_len STRING,\
     runtime STRING, memory STRING, code STRING)')
@@ -96,8 +96,12 @@ try:
 
         cur.execute(sql, data)
 
+try:
+    create_db()
+
 except sqlite3.OperationalError:
-    None
+    cur.execute('DROP TABLE atcoder')
+    create_db()
 
 con.commit()
 
