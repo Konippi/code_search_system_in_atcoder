@@ -22,7 +22,7 @@ runtime = []
 memory = []
 code = []
 
-db_name = 'atcoder_list.db'
+db_name = 'atcoder.db'
 con = sqlite3.connect(db_name)
 cur = con.cursor()
 

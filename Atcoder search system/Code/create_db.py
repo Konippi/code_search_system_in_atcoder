@@ -66,7 +66,7 @@ for a in range(5):
         for j in i.find_all(href = re.compile('/contests/abc100/submissions/')):
             get_code('https://atcoder.jp' + j.attrs['href'], 0)
 
-db_name = 'atcoder_list.db'
+db_name = 'atcoder.db'
 con = sqlite3.connect(db_name)
 cur = con.cursor()
 
