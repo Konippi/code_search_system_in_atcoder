@@ -1,29 +1,29 @@
-var dataset = {
+let dataset = {
     "children": []
 };
 
-for(var i=0;i<language_len;i++){
+for(let i=0;i<language_len;i++){
     dataset.children.push({"Name":language_key[i], "Count":language_value[i]});
 }
 
-var diameter = 650;
+let diameter = 650;
 
-var color = d3.scaleOrdinal(d3.schemeCategory20);
+let color = d3.scaleOrdinal(d3.schemeCategory20);
 
-var bubble = d3.pack(dataset)
+let bubble = d3.pack(dataset)
     .size([diameter, diameter])
     .padding(1.5);
 
-var svg = d3.select("body")
+let svg = d3.select("body")
     .append("svg")
     .attr("width", diameter)
     .attr("height", diameter)
     .attr("class", "bubble");
 
-var nodes = d3.hierarchy(dataset)
+let nodes = d3.hierarchy(dataset)
     .sum(function(d) { return d.Count; });
 
-var node = svg.selectAll(".node")
+let node = svg.selectAll(".node")
     .data(bubble(nodes).descendants())
     .enter()
     .filter(function(d){

@@ -11,16 +11,16 @@ runtime = []
 memory = []
 code = []
 
-def get_code(code_url, num2):
+def get_code(code_url, count):
 
     code_html = requests.get(code_url)
     code_soup = BeautifulSoup(code_html.content, 'html.parser')
     for k in code_soup.find_all('pre'):
-        if num2 == 0:
+        if count == 0:
             code.append(k.text)
-        num2 += 1
+        count += 1
 
-def get_rating(user_url, num3, i):
+def get_rating(user_url, count):
 
     judge = False
 
@@ -28,28 +28,27 @@ def get_rating(user_url, num3, i):
     user_soup = BeautifulSoup(user_html.content, 'html.parser')
     
     for k in user_soup.find_all('span', class_ = re.compile('user-')):
-        if num3 == 1:
+        if count == 1:
             rating.append(k.text)
             judge = True
-        num3 += 1
+        count += 1
 
     if judge == False:
         rating.append(0)
 
-for a in range(5):
-    url = 'https://atcoder.jp/contests/abc100/submissions?f.Task=abc100_b&f.LanguageName=&f.Status=AC&f.User=&page=' + str(a+1)
+for roop in range(5):
+    url = 'https://atcoder.jp/contests/abc100/submissions?f.Task=abc100_b&f.LanguageName=&f.Status=AC&f.User=&page=' + str(roop+1)
     html = requests.get(url)
     soup = BeautifulSoup(html.content, 'html.parser')
 
     num = 0
-    m = 0
+    count = 0
 
     for i in soup.find_all('tbody'):
             
         for j in i.find_all(href = re.compile('/users')):
             user.append(j.text)
-            get_rating('https://atcoder.jp' + j.attrs['href'], 0, m)
-            m += 1
+            get_rating('https://atcoder.jp' + j.attrs['href'], 0)
             
         for j in i.find_all(href = re.compile('Language')):
             language.append(j.text)
