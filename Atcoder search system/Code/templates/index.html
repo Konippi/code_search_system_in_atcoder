@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Atcoder Search System</title>
+    <link rel="stylesheet" href="/static/css/first.css">
+</head>
+<body>
+    <h1>AtCoder Search System</h1>
+    <form action="/Working" method="POST">
+        <div class="select">
+            <p>コンテスト：
+                <select id="contests" name="contest" onchange="change_problem()">
+                    <option hidden>選択してください</option>
+                    <script type="text/javascript">
+                        for(let i={{contest_num|tojson}}; i>0; i--) {
+                            let number = ('000'+i).slice(-3);
+                            document.write('<option value="' + number + '">ABC '+ number +'</option>');
+                        }
+                    </script>
+                </select>
+            </p>
+            <p>問題：
+                <select id="problems" name="problem">
+                    <option hidden>選択してください</option>
+                    <script type="text/javascript">
+                        let problem_num = 0;
+
+                        function change_problem() {
+                            let selected_problem = document.getElementById('problems');
+
+                            for(let i=1; i<=problem_num; i++){
+                                selected_problem.remove(1)
+                            }
+
+                            let abc = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'Ex'];
+
+                            let selected_contest = document.getElementById("contests").value;
+
+                            if(selected_contest <= 125) {
+                                abc = ['A', 'B', 'C', 'D'];
+                            }
+                            else if(selected_contest <= 211) {
+                                abc = ['A', 'B', 'C', 'D', 'E', 'F'];
+                            }
+
+                            for(let i=0; i<abc.length; i++) {
+                                create_option = document.createElement('option');
+
+                                if(abc[i] == 'Ex') {
+                                    create_option.value = 'H';
+                                }
+                                else {
+                                    create_option.value = abc[i];
+                                }
+                                
+                                create_option.textContent = abc[i];
+
+                                selected_problem.appendChild(create_option)
+                            }
+
+                            problem_num = abc.length;
+                        }
+                    </script>
+                </select>
+            </p>
+            <input type="submit" id="start" value="START">
+        </div>
+    </form>
+</body>
+</html>

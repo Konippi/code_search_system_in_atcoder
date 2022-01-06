@@ -1,3 +1,5 @@
+from consts import PEOPLE_NUM
+
 import sqlite3
 import requests
 import re
@@ -36,16 +38,33 @@ def get_rating(user_url, count):
     if judge == False:
         rating.append(0)
 
-for roop in range(5):
-    url = 'https://atcoder.jp/contests/abc100/submissions?f.Task=abc100_b&f.LanguageName=&f.Status=AC&f.User=&page=' + str(roop+1)
-    html = requests.get(url)
-    soup = BeautifulSoup(html.content, 'html.parser')
+def create_db(cur):
+    cur.execute('CREATE TABLE atcoder(id INTEGER, user STRING,\
+    rating STRING, language STRING,code_len STRING,\
+    runtime STRING, memory STRING, code STRING)')
 
-    num = 0
-    count = 0
+    for i in range(PEOPLE_NUM):
+        sql = ('INSERT INTO atcoder (id, user, rating,\
+            language, code_len, runtime, memory, code)\
+            VALUES(?,?,?,?,?,?,?,?)')
 
-    for i in soup.find_all('tbody'):
-            
+        data = (i, user[i], rating[i], language[i],
+                code_len[i], runtime[i], memory[i], code[i])
+
+        cur.execute(sql, data)
+
+def set_db(contest, problem):
+    for roop in range(int(PEOPLE_NUM/20)):
+
+        url = 'https://atcoder.jp/contests/abc' + contest + '/submissions?f.Task=abc' + contest + '_' + problem + '&f.LanguageName=&f.Status=AC&f.User=&page=' + str(roop+1)
+        html = requests.get(url)
+        soup = BeautifulSoup(html.content, 'html.parser')
+
+        num = 0
+        count = 0
+
+        i = soup.find('tbody')
+                
         for j in i.find_all(href = re.compile('/users')):
             user.append(j.text)
             get_rating('https://atcoder.jp' + j.attrs['href'], 0)
@@ -62,36 +81,21 @@ for roop in range(5):
                 memory.append(j.text)
             num += 1
             
-        for j in i.find_all(href = re.compile('/contests/abc100/submissions/')):
+        for j in i.find_all(href = re.compile('/contests/abc' + contest + '/submissions/')):
             get_code('https://atcoder.jp' + j.attrs['href'], 0)
 
-db_name = 'atcoder.db'
-con = sqlite3.connect(db_name)
-cur = con.cursor()
+    db_name = 'atcoder.db'
+    con = sqlite3.connect(db_name)
+    cur = con.cursor()
 
-def create_db():
-    cur.execute('CREATE TABLE atcoder(id INTEGER, user STRING,\
-    rating STRING, language STRING,code_len STRING,\
-    runtime STRING, memory STRING, code STRING)')
+    try:
+        create_db(cur)
 
-    for i in range(100):
-        sql = ('INSERT INTO atcoder (id, user, rating,\
-            language, code_len, runtime, memory, code)\
-            VALUES(?,?,?,?,?,?,?,?)')
+    except sqlite3.OperationalError:
+        cur.execute('DROP TABLE atcoder')
+        create_db(cur)
 
-        data = (i, user[i], rating[i], language[i],
-                code_len[i], runtime[i], memory[i], code[i])
+    con.commit()
 
-        cur.execute(sql, data)
-
-try:
-    create_db()
-
-except sqlite3.OperationalError:
-    cur.execute('DROP TABLE atcoder')
-    create_db()
-
-con.commit()
-
-cur.close()
-con.close()
+    cur.close()
+    con.close()
