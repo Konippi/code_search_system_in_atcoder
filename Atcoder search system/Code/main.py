@@ -1,6 +1,5 @@
 from consts import PEOPLE_NUM
 from consts import CONTEST_NUM
-from create_data_db import set_db
 
 import sqlite3
 import requests
@@ -11,13 +10,13 @@ from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
-def set_data():
+def set_data(CONTEST, PROBLEM):
 
     db_name = 'atcoder.db'
     con = sqlite3.connect(db_name)
     cur = con.cursor()
-
-    cur.execute('SELECT * FROM atcoder')
+    
+    cur.execute('SELECT * FROM atcoder_' + CONTEST + '_' + PROBLEM)
 
     for data in cur:
         user.append(data[1])
@@ -50,10 +49,8 @@ def languages():
     if request.method == 'POST':
         CONTEST = request.form.get('contest')
         PROBLEM = request.form.get('problem')
-    
-    set_db(CONTEST, PROBLEM)
 
-    set_data()
+    set_data(CONTEST, PROBLEM)
 
     c_language = collections.Counter(language)
 

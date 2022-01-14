@@ -58,6 +58,7 @@ node.append("circle")
         .attr("stroke-width", 6)
         document.getElementById("language").value = d.data.Name;
         document.getElementById("submit").type = "submit";
+        document.getElementById("submit").click();
     });
 
 node.append("text")

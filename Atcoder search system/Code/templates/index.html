@@ -12,7 +12,7 @@
         <div class="select">
             <p>コンテスト：
                 <select id="contests" name="contest" onchange="change_problem()">
-                    <option hidden>選択してください</option>
+                    <option hidden>---選択してください---</option>
                     <script type="text/javascript">
                         for(let i={{contest_num|tojson}}; i>0; i--) {
                             let number = ('000'+i).slice(-3);
@@ -22,8 +22,8 @@
                 </select>
             </p>
             <p>問題：
-                <select id="problems" name="problem">
-                    <option hidden>選択してください</option>
+                <select id="problems" name="problem" onchange="select_judge()">
+                    <option hidden>---選択してください---</option>
                     <script type="text/javascript">
                         let problem_num = 0;
 
@@ -36,7 +36,7 @@
 
                             let abc = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'Ex'];
 
-                            let selected_contest = document.getElementById("contests").value;
+                            let selected_contest = document.getElementById('contests').value;
 
                             if(selected_contest <= 125) {
                                 abc = ['A', 'B', 'C', 'D'];
@@ -46,7 +46,7 @@
                             }
 
                             for(let i=0; i<abc.length; i++) {
-                                create_option = document.createElement('option');
+                                let create_option = document.createElement('option');
 
                                 if(abc[i] == 'Ex') {
                                     create_option.value = 'H';
@@ -65,7 +65,13 @@
                     </script>
                 </select>
             </p>
-            <input type="submit" id="start" value="START">
+            <input type="submit" value="SEARCH" id="search" disabled>
+            <script type="text/javascript">
+                function select_judge() {
+                    let search = document.getElementById('search');
+                    search.disabled = false;
+                }
+            </script>
         </div>
     </form>
 </body>

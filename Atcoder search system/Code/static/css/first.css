@@ -8,3 +8,15 @@ h1{
     font-weight: bold;
     font-family: Century, serif;
 }
+#contests{
+    border-radius: 10px;
+}
+#problems{
+    border-radius: 10px;
+}
+#search{
+    border-radius: 10px;
+}
+#start:hover{
+    background-color: gray;
+}
