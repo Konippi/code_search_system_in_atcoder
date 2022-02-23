@@ -11,7 +11,7 @@ for(let i=0;i<user_len;i++){
     dataset.children.push({"Name":user_key[i], "Count":user_value[i]});
 }
 
-document.getElementById("beginner").innerHTML = "コンテスト未参加者: " + beginner + "名"; 
+document.getElementById("beginner").innerHTML = "コンテスト未参加者：" + beginner + "名"; 
 
 let diameter = 650;
 

@@ -4,12 +4,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <title>Atcoder Search System</title>
-    <link rel="stylesheet" href="/static/css/first.css">
+    <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
     <h1>AtCoder Search System</h1>
-    <form action="/Working" method="POST">
-        <div class="select">
+    <div class="select">
+        <form action="/Working" method="POST">
             <p>コンテスト：
                 <select id="contests" name="contest" onchange="change_problem()">
                     <option hidden>---選択してください---</option>
@@ -72,7 +72,7 @@
                     search.disabled = false;
                 }
             </script>
-        </div>
-    </form>
+        </form>
+    </div>
 </body>
 </html>

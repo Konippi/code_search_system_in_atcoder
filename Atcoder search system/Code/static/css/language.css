@@ -6,10 +6,11 @@ body{
 h1{
     margin-top: 50px;
 }
-#submit{
-    background-color: white;
-    border-radius: 30px;
+#language, #submit{
+    display: none;
 }
-#submit:hover{
-    background-color: rgb(199, 199, 199);
+#range{
+    width: 30px;
+    top: 3.5px;
+    position: relative;
 }

@@ -1,0 +1,11 @@
+body{
+    text-align: center;
+    font-family: Century Gothic, sans-serif;
+    font-weight: bold;
+}
+h1{
+    margin-top: 55px;
+}
+#user, #submit{
+    display: none;
+}
