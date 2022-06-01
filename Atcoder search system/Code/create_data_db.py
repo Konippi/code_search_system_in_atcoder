@@ -199,7 +199,7 @@ def set_db(cur, contest, problem):
 def main():
 
     #コンテスト読み込み開始
-    START_CONTEST = 239
+    START_CONTEST = 241
 
     for i in range(START_CONTEST, CONTEST_NUM+1):
 
