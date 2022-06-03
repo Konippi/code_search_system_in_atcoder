@@ -2,11 +2,13 @@ h1{
     text-align: center;
     margin-top: 240px;
     font-family: Century Gothic, sans-serif;
+    font-size: 48px;
 }
 .select{
     text-align: center;
     font-weight: bold;
     font-family: Century, serif;
+    font-size: 14px;
 }
 #contests{
     border-radius: 10px;
