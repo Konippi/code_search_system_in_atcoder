@@ -1,5 +1,5 @@
 # AtCoderソースコード検索システム
-・既存のAtCoderのソースコード検索システムを改良し，UIに注力した．
+・既存のAtCoderのソースコード検索システムを改良し，UIおよびUXに注力した．
 
 # Demo
 ![1](https://user-images.githubusercontent.com/86059523/171788327-c607adbf-7e4e-4cc7-b2a9-0590e2c5208e.png)
