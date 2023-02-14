@@ -1,0 +1,14 @@
+# static analysis
+black
+
+# code formatter
+flake8
+
+# python
+Flask
+SQLAlchemy
+alembic
+pysqlite3
+python-dotenv
+requests
+beautifulsoup4
