@@ -1,8 +1,10 @@
-# AtCoder ソースコード検索システム
+# Source Code Search System in AtCoder :smile:
 
-・既存の AtCoder のソースコード検索システムを改良し，UI および UX に注力
+## :black_nib:<u>Overview</u>
 
-# Demo
+- 既存の AtCoder のソースコード検索システムを改良し，**UI**および**UX**に注力
+
+## Demo
 
 ## ![1](https://user-images.githubusercontent.com/86059523/171788327-c607adbf-7e4e-4cc7-b2a9-0590e2c5208e.png)
 
