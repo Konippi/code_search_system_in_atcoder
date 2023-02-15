@@ -1,12 +1,10 @@
 # Source Code Search System in AtCoder :mag:
 
-## :black_nib:Overview
+## :black_nib: Overview
 
-- 既存の AtCoder のソースコード検索システムを改良し，**UI**および**UX**に注力
+Improved the original AtCoder source code search system, and focused on **UI**/**UX** !
 
-<br>
-
-## :black_nib:Demo
+## :framed_picture: Demo
 
 ## ![1](https://user-images.githubusercontent.com/86059523/171788327-c607adbf-7e4e-4cc7-b2a9-0590e2c5208e.png)
 
