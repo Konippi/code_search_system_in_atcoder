@@ -8,7 +8,7 @@ import os
 
 
 def set_secrets():
-    # load environment vars
+    # load environmental vars
     env_path = os.join(os.dirname(__file__), ".env")
     load_dotenv(env_path)
 
