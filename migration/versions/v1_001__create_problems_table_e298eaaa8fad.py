@@ -1,14 +1,16 @@
-"""create problems table
+"""V1_001__create_problems_table
 
-Revision ID: ab4c1de84aa6
+Revision ID: e298eaaa8fad
 Revises: 
-Create Date: 2023-01-25 23:00:35.106507
+Create Date: 2023-02-19 15:06:02.840890
 
 """
 from alembic import op
 import sqlalchemy as sa
 
-revision = "ab4c1de84aa6"
+
+# revision identifiers, used by Alembic.
+revision = "e298eaaa8fad"
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -21,7 +23,7 @@ def upgrade() -> None:
         sa.Column("id", sa.Integer, primary_key=True, autoincrement=True),
         sa.Column("contest", sa.Integer, nullable=False),
         sa.Column("diff", sa.String(2), nullable=False),
-        sa.Column("title", sa.String(128), nullable=False),
+        sa.Column("title", sa.String(128), nullable=False, unique=True),
     )
 
 

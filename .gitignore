@@ -1,7 +1,11 @@
-*.db
-
+# cache
 __pycache__
 
-alembic.ini
-
+# environmental vars
 .env
+
+# database
+*.db
+
+# alembic
+alembic.ini
