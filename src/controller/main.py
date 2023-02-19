@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request
 from sqlalchemy.orm import sessionmaker
-from ..service import service
+from ..service import init_service
 import sqlite3
 import requests
 import re
@@ -24,8 +24,8 @@ your_lang = ""
 
 @app.before_first_request
 def init():
-    service.set_secrets()
-    service.set_db()
+    init_service.set_secrets()
+    init_service.set_db()
 
 
 def initialization():
