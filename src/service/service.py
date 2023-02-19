@@ -1,10 +1,8 @@
 from ..common import common
 from dotenv import load_dotenv
 import os
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, scoped_session
 import sqlalchemy as sa
-import os
 
 
 def set_secrets():
@@ -16,5 +14,7 @@ def set_secrets():
 
 
 def set_db():
-    engine = sa.create_engine(url="sqlite:///{common.db_name}")
-    common.session = sessionmaker(bind=engine)
+    engine = sa.create_engine(url="sqlite:///{common.db_name}", echo=True)
+    common.session = scoped_session(
+        sessionmaker(autocommit=False, autoflush=False, bind=engine)
+    )

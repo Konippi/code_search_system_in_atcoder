@@ -25,6 +25,7 @@ your_lang = ""
 @app.before_first_request
 def init():
     service.set_secrets()
+    service.set_db()
 
 
 def initialization():
