@@ -1,5 +1,5 @@
-from ..common import common
-from ..repository import srepository
+from common import common
+from repository import repository
 from . import scraping
 from dotenv import load_dotenv
 from sqlalchemy.orm import sessionmaker, scoped_session
@@ -11,7 +11,7 @@ import os
 
 # load environmental vars
 def set_secrets() -> None:
-    env_path = os.join(os.dirname(__file__), ".env")
+    env_path = os.path.join(os.path.dirname(__file__), ".env")
     load_dotenv(env_path)
     common.db_name = os.environ.get("DB_NAME")
     common.UA = os.environ.get("UA")
@@ -29,5 +29,5 @@ def set_db_session() -> None:
 
 def set_atcoder_data():
     problem_list = scraping.get_problems()
-    user_list = scraping.get_users()
-    submission_list = scraping.get_submissions()
+    # user_list = scraping.get_users()
+    # submission_list = scraping.get_submissions()
