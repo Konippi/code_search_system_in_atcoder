@@ -1,2 +1,3 @@
-db_name = ""
+db_name = None
 session = None
+UA = None

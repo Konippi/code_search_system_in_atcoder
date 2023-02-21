@@ -1,15 +1,12 @@
+from src import service
 from flask import Flask, render_template, request
-from sqlalchemy.orm import sessionmaker
-from ..service import init_service
 import sqlite3
-import requests
-import re
-from bs4 import BeautifulSoup
 import collections
 
-
 app = Flask(
-    __name__, static_folder="frontend/static", template_folder="frontend/templates"
+    __name__,
+    static_folder="../../frontend/static",
+    template_folder="../../frontend/templates",
 )
 
 user = []
@@ -23,10 +20,10 @@ your_lang = ""
 
 
 @app.before_first_request
-def init():
-    init_service.set_secrets()
-    init_service.set_db_session()
-    init_service.set_atcoder_data()
+def init() -> None:
+    service.set_secrets()
+    service.set_db_session()
+    service.set_atcoder_data()
 
 
 def initialization():
@@ -61,10 +58,8 @@ def set_data(CONTEST, PROBLEM):
 
 
 @app.route("/", methods=["GET"])
-def init():
-    service.set_env_var()
-    service.set_db()
-    return render_template("index.html", contest_num=CONTEST_NUM)
+def index():
+    return render_template("index.html", contest_num=250)
 
 
 @app.route("/Working", methods=["GET", "POST"])
