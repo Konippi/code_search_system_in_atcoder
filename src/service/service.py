@@ -28,6 +28,4 @@ def set_db_session() -> None:
 
 
 def set_atcoder_data():
-    problem_list = scraping.get_problems()
-    # user_list = scraping.get_users()
-    # submission_list = scraping.get_submissions()
+    problem_list = scraping.get_submissions()

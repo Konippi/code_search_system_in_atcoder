@@ -1,11 +1,15 @@
 from service import service
 from flask import Flask, render_template
+from logging.config import dictConfig
+import logging
 
 app = Flask(
     __name__,
     static_folder="../frontend/static",
     template_folder="../frontend/templates",
 )
+
+logging.basicConfig(level=logging.INFO)
 
 
 @app.before_first_request
