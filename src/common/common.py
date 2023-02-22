@@ -1,4 +1,4 @@
-db_name = None
-session = None
+DB_NAME = None
+SESSION = None
 UA = None
-people_num = 100
+PEOPLE_NUM = 20

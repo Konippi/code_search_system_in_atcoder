@@ -13,16 +13,16 @@ import os
 def set_secrets() -> None:
     env_path = os.path.join(os.path.dirname(__file__), ".env")
     load_dotenv(env_path)
-    common.db_name = os.environ.get("DB_NAME")
+    common.DB_NAME = os.environ.get("DB_NAME")
     common.UA = os.environ.get("UA")
 
 
 # set db session
 def set_db_session() -> None:
     engine = sa.create_engine(
-        url=f"sqlite:///{common.db_name}.db", encoding="utf-8", echo=True
+        url=f"sqlite:///{common.DB_NAME}.db", encoding="utf-8", echo=True
     )
-    common.session = scoped_session(
+    common.SESSION = scoped_session(
         sessionmaker(autocommit=False, autoflush=False, bind=engine)
     )
 
