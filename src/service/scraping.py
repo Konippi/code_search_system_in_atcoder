@@ -128,6 +128,4 @@ def get_submissions():
                 (user.text, get_rating(url=f"https://atcoder.jp{user.attrs['href']}"))
                 for user in soup.find_all(href=re.compile("/users"))
             ]
-            language_list = [language for language in soup.find_all(href=re.compile("Language"))]
-            app.logger.info(user_info_list)
-            app.logger.info(language_list)
+            language_list = [language.text for language in soup.find_all(href=re.compile("Language"))]
