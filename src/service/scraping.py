@@ -2,6 +2,7 @@ from common import common
 from utils import preprocess
 from main import app
 from bs4 import BeautifulSoup
+from concurrent.futures import ThreadPoolExecutor
 import requests
 import re
 
@@ -70,6 +71,7 @@ def get_target_submissions_info(latest_contest_num: int) -> dict[list[str, int |
     -------
     """
     target_submissions_info_list = []
+
     for contest_num in range(1, latest_contest_num + 1):
         pair_diff_dict = get_pair_diffs(contest_num=contest_num)
         str_contest = str(contest_num).zfill(3)
@@ -80,6 +82,7 @@ def get_target_submissions_info(latest_contest_num: int) -> dict[list[str, int |
                 )
             else:
                 combined_contest_with_diff = f"abc{str_contest}_{diff_for_scraping}"
+
             submissions_url = (
                 f"https://atcoder.jp/contests/abc{str_contest}/"
                 f"submissions?f.Task={combined_contest_with_diff}&f.Status=AC"
@@ -107,25 +110,43 @@ def get_rating(url: str) -> int:
     """
     html = requests.get(url=url, headers={"User-Agent": common.UA})
     soup = BeautifulSoup(html.content, "html.parser")
+
+    # レートなしユーザの判定
     if len(soup.find_all("canvas")) == 0:
         return 0
+
     rating = int(soup.find_all("span", class_=re.compile("user-"))[2].text)
+
     return rating
 
 
-def get_submissions():
+def get_submissions(url: str):
+    html = requests.get(url=url, headers={"User-Agent": common.UA})
+    soup = BeautifulSoup(html.content, "html.parser")
+    # ページに解答履歴が存在しない場合
+    if len(soup.find_all("tbody")) == 0:
+        return
+
+    user_info_list = [
+        (user.text, get_rating(url=f"https://atcoder.jp{user.attrs['href']}"))
+        for user in soup.find_all(href=re.compile("/users"))
+    ]
+
+    language_list = [language.text for language in soup.find_all(href=re.compile("Language"))]
+
+    app.logger.info(user_info_list)
+    app.logger.info(language_list)
+
+
+def get_submissions_info():
     submission_list = []
     latest_contest_num = get_latest_contest_num()
     target_submissions_info_list = get_target_submissions_info(latest_contest_num=latest_contest_num)
-    for submission_info in target_submissions_info_list:
-        for page in range(1, (common.PEOPLE_NUM // 20) + 1):
-            html = requests.get(url=f"{submission_info['url']}&page={str(page)}", headers={"User-Agent": common.UA})
-            soup = BeautifulSoup(html.content, "html.parser")
-            # ページに解答履歴が存在しない場合
-            if len(soup.find_all("tbody")) == 0:
-                break
-            user_info_list = [
-                (user.text, get_rating(url=f"https://atcoder.jp{user.attrs['href']}"))
-                for user in soup.find_all(href=re.compile("/users"))
+
+    with ThreadPoolExecutor(9) as executor:
+        app.logger.info(
+            [
+                executor.submit(get_submissions(url=submission_info["url"]))
+                for submission_info in target_submissions_info_list
             ]
-            language_list = [language.text for language in soup.find_all(href=re.compile("Language"))]
+        )
