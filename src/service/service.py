@@ -28,4 +28,4 @@ def set_db_session() -> None:
 
 
 def set_atcoder_data():
-    submissions_info_list = scraping.get_submissions_info()
+    submission_dto_list = scraping.get_submission_dto()
