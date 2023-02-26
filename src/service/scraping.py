@@ -21,7 +21,7 @@ def get_latest_contest_num() -> int:
     html = requests.get(url=url, headers={"User-Agent": common.UA})
     soup = BeautifulSoup(html.content, "html.parser")
 
-    target = soup.find(href=re.compile("/contests/abc")).get("href")
+    target = soup.find(href=re.compile(r"/contests/abc")).get("href")
     latest_contest = re.search(r"abc(.*)", target).group()
     latest_contest_num = int(latest_contest.replace("abc", ""))
 
@@ -115,9 +115,17 @@ def get_rating(url: str) -> int:
     if len(soup.find_all("canvas")) == 0:
         return 0
 
-    rating = int(soup.find_all("span", class_=re.compile("user-"))[2].text)
+    rating = int(soup.find_all("span", class_=re.compile(r"user-"))[2].text)
 
     return rating
+
+
+def get_code(url: str) -> str:
+    html = requests.get(url=url, headers={"User-Agent": common.UA})
+    soup = BeautifulSoup(html.content, "html.parser")
+    code = soup.find("pre", id="submission-code").text
+
+    return code
 
 
 def get_submissions(url: str):
@@ -127,26 +135,30 @@ def get_submissions(url: str):
     if len(soup.find_all("tbody")) == 0:
         return
 
-    user_info_list = [
+    user_name_with_rating_list = [
         (user.text, get_rating(url=f"https://atcoder.jp{user.attrs['href']}"))
-        for user in soup.find_all(href=re.compile("/users"))
+        for user in soup.find_all(href=re.compile(r"/users"))
     ]
 
-    language_list = [language.text for language in soup.find_all(href=re.compile("Language"))]
+    language_list = [language.text for language in soup.find_all(href=re.compile(r"Language"))]
 
-    app.logger.info(user_info_list)
-    app.logger.info(language_list)
+    code_len_list = [
+        code_len.text for idx, code_len in enumerate(soup.find_all("td", class_="text-right")) if (idx - 1) % 4 == 0
+    ]
+
+    code_list = [
+        get_code(url=f"https://atcoder.jp{code.attrs['href']}")
+        for code in soup.find_all(href=re.compile(r"/contests/abc\d{3}/submissions/(.+)"))
+    ]
+
+    app.logger.info(code_list)
 
 
 def get_submissions_info():
     submission_list = []
     latest_contest_num = get_latest_contest_num()
     target_submissions_info_list = get_target_submissions_info(latest_contest_num=latest_contest_num)
-
-    with ThreadPoolExecutor(9) as executor:
-        app.logger.info(
-            [
-                executor.submit(get_submissions(url=submission_info["url"]))
-                for submission_info in target_submissions_info_list
-            ]
-        )
+    # parallel process
+    with ThreadPoolExecutor(max_workers=6) as executor:
+        for submission_info in target_submissions_info_list:
+            executor.submit(get_submissions(url=submission_info["url"]))
