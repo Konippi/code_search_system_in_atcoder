@@ -5,7 +5,6 @@ from bs4 import BeautifulSoup
 from concurrent.futures import ThreadPoolExecutor
 import requests
 import re
-import time
 
 
 def get_latest_contest_num() -> int:
