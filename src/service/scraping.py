@@ -11,6 +11,11 @@ def get_latest_contest_num() -> int:
     """
     開催された最新ABCのコンテスト番号を取得
 
+    Parameters
+    ----------
+    None
+    ----------
+
     Returns
     -------
     latest_contest_num: int
@@ -21,11 +26,11 @@ def get_latest_contest_num() -> int:
     html = requests.get(url=url, headers={"User-Agent": common.UA})
     soup = BeautifulSoup(html.content, "html.parser")
 
-    target = soup.find(href=re.compile(r"/contests/abc")).get("href")
+    target = soup.find(href=re.compile(r"^/contests/abc")).attrs["href"]
     latest_contest = re.search(r"abc(.*)", target).group()
     latest_contest_num = int(latest_contest.replace("abc", ""))
 
-    return latest_contest_num
+    return 3
 
 
 def get_pair_diffs(contest_num: int) -> dict[str, str]:
@@ -203,6 +208,11 @@ def get_submission_dto() -> dict[str, int | str | list]:
     """
     提出情報dtoを取得
 
+    Parameters
+    ----------
+    None
+    ----------
+
     Returns
     -------
     submission_dto_list: dict[str, int | str | list]
@@ -215,7 +225,5 @@ def get_submission_dto() -> dict[str, int | str | list]:
     # parallel process
     with ThreadPoolExecutor(max_workers=4) as executor:
         submission_dto_list = list(executor.map(get_submissions, target_submission_info_list))
-
-    app.logger.info(submission_dto_list)
 
     return submission_dto_list

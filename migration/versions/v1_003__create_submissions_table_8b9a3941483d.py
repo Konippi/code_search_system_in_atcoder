@@ -30,6 +30,8 @@ def upgrade() -> None:
             sa.Integer,
             sa.ForeignKey("problems.id", onupdate="CASCADE", ondelete="CASCADE"),
         ),
+        sa.Column("language", sa.String(32), nullable=False),
+        sa.Column("code_len", sa.String(8), nullable=False),
         sa.Column("code", sa.String(10000), nullable=False),
     )
 
