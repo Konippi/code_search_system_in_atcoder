@@ -103,7 +103,7 @@ def set_atcoder_data() -> None:
 
 def update_atcoder_data() -> None:
     """
-    提出履歴を更新（cron: Sat.23:00:00）
+    提出履歴を更新(cron: Sat.23:00:00)
 
     Parameters
     ----------
