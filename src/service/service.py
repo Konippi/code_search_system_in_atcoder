@@ -115,7 +115,7 @@ def update_atcoder_data() -> None:
     None
     -------
     """
-    schedule.every().monday.at("23:00").do(set_atcoder_data)
+    schedule.every().saturday.at("23:00").do(set_atcoder_data)
 
     while True:
         schedule.run_pending()
