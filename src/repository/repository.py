@@ -1,3 +1,5 @@
-# update atcoder data in db
-def update_atcoder_data():
+def update_atcoder_data() -> None:
+    """
+    DBの提出履歴を更新
+    """
     pass
