@@ -1,7 +1,7 @@
 # vscode settings
 .vscode
 
-# cache
+# pycache
 __pycache__
 
 # environmental vars
