@@ -1,5 +1,5 @@
-from service import service
-from flask import Flask, render_template
+from config import log_config
+from flask import Flask
 
 
 app = Flask(
@@ -9,18 +9,6 @@ app = Flask(
 )
 
 
-@app.before_first_request
-def init() -> None:
-    service.set_secrets()
-    service.set_db_session()
-    service.update_atcoder_data()
-
-
-@app.route("/", methods=["GET"])
-def index():
-    return render_template("index.html", contest_num=250)
-
-
 if __name__ == "__main__":
-    service.set_log_config()
+    log_config.set_log_config()
     app.run(debug=True)

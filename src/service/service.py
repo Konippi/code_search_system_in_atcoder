@@ -6,29 +6,8 @@ from dotenv import load_dotenv
 from sqlalchemy.orm import sessionmaker, scoped_session
 import sqlalchemy as sa
 import os
-import logging
 import schedule
 import time
-
-
-def set_log_config() -> None:
-    """
-    ログを設定
-
-    Parameters
-    ----------
-    None
-    ----------
-
-    Returns
-    -------
-    None
-    -------
-    """
-    logger = logging.getLogger()
-    logger.setLevel(logging.DEBUG)
-    logger.addHandler(logging.FileHandler(filename="../logs/app.log", encoding="utf-8", mode="w"))
-    logger.propagate = False
 
 
 def set_secrets() -> None:
@@ -65,8 +44,12 @@ def set_db_session() -> None:
     None
     -------
     """
-    engine = sa.create_engine(url=f"sqlite:///{common.DB_NAME}.db", encoding="utf-8", echo=True)
-    common.SESSION = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine))
+    engine = sa.create_engine(
+        url=f"sqlite:///{common.DB_NAME}.db", encoding="utf-8", echo=True
+    )
+    common.SESSION = scoped_session(
+        sessionmaker(autocommit=False, autoflush=False, bind=engine)
+    )
 
 
 def set_atcoder_data() -> None:
@@ -76,7 +59,11 @@ def set_atcoder_data() -> None:
     submission_record_list = []
     for submission_dto in submission_dto_list:
         problem_record_list.append(
-            {"contest": submission_dto["contest"], "diff": submission_dto["diff"], "title": submission_dto["title"]}
+            {
+                "contest": submission_dto["contest"],
+                "diff": submission_dto["diff"],
+                "title": submission_dto["title"],
+            }
         )
         for submission_idx in range(len(submission_dto["users"])):
             user_name = submission_dto["users"][submission_idx][0]
