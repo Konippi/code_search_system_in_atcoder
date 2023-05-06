@@ -1,6 +1,5 @@
 from common import common
 from utils import preprocess
-from main import app
 from bs4 import BeautifulSoup
 from concurrent.futures import ThreadPoolExecutor
 import requests

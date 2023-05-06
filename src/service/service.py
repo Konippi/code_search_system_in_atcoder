@@ -1,5 +1,4 @@
 from common import common
-from main import app
 from repository import repository
 from . import scraping
 from dotenv import load_dotenv
@@ -44,12 +43,8 @@ def set_db_session() -> None:
     None
     -------
     """
-    engine = sa.create_engine(
-        url=f"sqlite:///{common.DB_NAME}.db", encoding="utf-8", echo=True
-    )
-    common.SESSION = scoped_session(
-        sessionmaker(autocommit=False, autoflush=False, bind=engine)
-    )
+    engine = sa.create_engine(url=f"sqlite:///{common.DB_NAME}.db", encoding="utf-8", echo=True)
+    common.SESSION = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine))
 
 
 def set_atcoder_data() -> None:
