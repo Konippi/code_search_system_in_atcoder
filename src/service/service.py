@@ -1,9 +1,7 @@
-from common import common
+from common import const
 from repository import repository
 from . import scraping
 from dotenv import load_dotenv
-from sqlalchemy.orm import sessionmaker, scoped_session
-import sqlalchemy as sa
 import os
 import schedule
 import time
@@ -25,26 +23,8 @@ def set_secrets() -> None:
     """
     env_path = os.path.join(os.path.dirname(__file__), ".env")
     load_dotenv(env_path)
-    common.DB_NAME = os.environ.get("DB_NAME")
-    common.UA = os.environ.get("UA")
-
-
-def set_db_session() -> None:
-    """
-    dbセッションを確立
-
-    Parameters
-    ----------
-    None
-    ----------
-
-    Returns
-    -------
-    None
-    -------
-    """
-    engine = sa.create_engine(url=f"sqlite:///{common.DB_NAME}.db", encoding="utf-8", echo=True)
-    common.SESSION = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine))
+    const.DB_NAME = os.environ.get("DB_NAME")
+    const.UA = os.environ.get("UA")
 
 
 def set_atcoder_data() -> None:

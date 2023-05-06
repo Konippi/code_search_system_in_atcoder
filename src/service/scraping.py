@@ -1,4 +1,4 @@
-from common import common
+from common import const
 from utils import preprocess
 from bs4 import BeautifulSoup
 from concurrent.futures import ThreadPoolExecutor
@@ -22,7 +22,7 @@ def get_latest_contest_num() -> int:
     -------
     """
     url = "https://atcoder.jp/contests/archive?ratedType=1&category=0"
-    html = requests.get(url=url, headers={"User-Agent": common.UA})
+    html = requests.get(url=url, headers={"User-Agent": const.UA})
     soup = BeautifulSoup(html.content, "html.parser")
 
     target = soup.find(href=re.compile(r"^/contests/abc")).attrs["href"]
@@ -112,7 +112,7 @@ def get_rating(url: str) -> int:
         レート
     -------
     """
-    html = requests.get(url=url, headers={"User-Agent": common.UA})
+    html = requests.get(url=url, headers={"User-Agent": const.UA})
     soup = BeautifulSoup(html.content, "html.parser")
 
     # レートなしユーザの判定
@@ -140,7 +140,7 @@ def get_code(url: str) -> str:
         ソースコード
     -------
     """
-    html = requests.get(url=url, headers={"User-Agent": common.UA})
+    html = requests.get(url=url, headers={"User-Agent": const.UA})
     soup = BeautifulSoup(html.content, "html.parser")
     code = soup.find("pre", id="submission-code").text
 
@@ -166,7 +166,7 @@ def get_submissions(target_submission_info: dict[str, str | int]) -> dict[str, i
     url = target_submission_info["url"]
     contest_num = target_submission_info["contest"]
     diff = target_submission_info["diff"]
-    html = requests.get(url=url, headers={"User-Agent": common.UA})
+    html = requests.get(url=url, headers={"User-Agent": const.UA})
     soup = BeautifulSoup(html.content, "html.parser")
 
     # title

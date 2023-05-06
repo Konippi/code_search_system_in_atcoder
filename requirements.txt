@@ -4,11 +4,13 @@ black
 # code formatter
 flake8
 
-# python
+# static type checker
+mypy
+
+# others
 Flask
 SQLAlchemy
 alembic
-pysqlite3
 python-dotenv
 requests
 beautifulsoup4
