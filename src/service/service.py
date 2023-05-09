@@ -1,13 +1,14 @@
-from common import const
-from repository import repository
-from . import scraping
 from dotenv import load_dotenv
+from typing import Optional, Tuple
+from repository import repository
+from handler.error.error_handler import InvalidEnvironmentVariable
+from . import scraping
 import os
 import schedule
 import time
 
 
-def set_secrets() -> None:
+def get_secrets() -> Tuple[str, str]:
     """
     環境変数を読込
 
@@ -23,11 +24,30 @@ def set_secrets() -> None:
     """
     env_path = os.path.join(os.path.dirname(__file__), ".env")
     load_dotenv(env_path)
-    const.DB_NAME = os.environ.get("DB_NAME")
-    const.UA = os.environ.get("UA")
+    db_name: Optional[str] = os.environ.get("DB_NAME")
+    ua: Optional[str] = os.environ.get("UA")
+
+    if db_name is None or ua is None:
+        raise InvalidEnvironmentVariable()
+
+    return db_name, ua
 
 
-def set_atcoder_data() -> None:
+def set_atcoder_submissions(ua: str) -> None:
+    """
+    AtCoderの提出履歴を取得
+
+    Parameters
+    ----------
+    ua: str
+        ユーザーエージェント
+    ----------
+
+    Returns
+    -------
+    None
+    -------
+    """
     submission_dto_list = scraping.get_submission_dto()
     problem_record_list = []
     user_record_list = []

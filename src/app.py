@@ -1,7 +1,7 @@
 from flask import Flask, render_template
 from config import log_config
 from service import service
-from db import db_setup
+from db import setup
 
 
 app = Flask(__name__, static_folder="../frontend/static", template_folder="../frontend/templates")
@@ -9,9 +9,10 @@ app = Flask(__name__, static_folder="../frontend/static", template_folder="../fr
 
 @app.before_first_request
 def init() -> None:
-    service.set_secrets()
-    db_setup.set_db_session()
-    service.set_atcoder_data()
+    db_name, ua = service.get_secrets()
+    db = setup.Db()
+    db.set_db_session(db_name=db_name)
+    service.set_atcoder_submissions(ua=ua)
 
 
 @app.route("/", methods=["GET"])

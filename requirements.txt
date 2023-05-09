@@ -6,10 +6,11 @@ flake8
 
 # static type checker
 mypy
+sqlalchemy[mypy]
 
 # others
-Flask
-SQLAlchemy
+flask
+sqlalchemy
 alembic
 python-dotenv
 requests
